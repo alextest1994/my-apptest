@@ -30,6 +30,43 @@ import Table from '@ckeditor/ckeditor5-table/src/table.js';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar.js';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation.js';
 
+import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
+
+
+class Timestamp extends Plugin {
+    init() {
+        const editor = this.editor;
+        // The button must be registered among the UI components of the editor
+        // to be displayed in the toolbar.
+        editor.ui.componentFactory.add( 'timestamp', () => {
+            // The button will be an instance of ButtonView.
+            const button = new ButtonView();
+
+            button.set( {
+                label: 'Timestamp',
+                withText: true
+            } );
+
+			// Execute a callback function when the button is clicked.
+            button.on( 'execute', () => {
+                const now = new Date();
+
+                // Change the model using the model writer.
+                editor.model.change( writer => {
+
+                    // Insert the text at the user's current position.
+                    editor.model.insertContent( writer.createText( now.toString() ) );
+                } );
+            } );
+
+            return button;
+        } );
+    }
+}
+
+import SimpleBox from './simplebox/simplebox';
+
 class Editor extends ClassicEditor {}
 
 // Plugins to include in the build.
@@ -59,7 +96,9 @@ Editor.builtinPlugins = [
 	PasteFromOffice,
 	Table,
 	TableToolbar,
-	TextTransformation
+	TextTransformation,
+	Timestamp,
+	SimpleBox
 ];
 
 // Editor configuration.
@@ -95,7 +134,8 @@ Editor.defaultConfig = {
 			'undo',
 			'redo',
 			'codeBlock',
-			'code'
+			'code',
+			'timestamp'
 		]
 	},
 	language: 'en',
