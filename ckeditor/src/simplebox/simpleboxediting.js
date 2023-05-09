@@ -7,7 +7,7 @@ import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget/src/utils
 import Widget from '@ckeditor/ckeditor5-widget/src/widget';
 
 export default class SimpleBoxEditing extends Plugin {
-    static get requires() {                                                    // ADDED
+    static get requires() {
         return [ Widget ];
     }
     init() {
@@ -16,7 +16,7 @@ export default class SimpleBoxEditing extends Plugin {
         this._defineConverters();
     }
 
-    _defineSchema() {                                                          // ADDED
+    _defineSchema() {
         const schema = this.editor.model.schema;
 
         schema.register( 'simpleBox', {
